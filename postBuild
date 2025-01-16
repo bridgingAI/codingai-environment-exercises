@@ -1,21 +1,18 @@
 #!/bin/bash
 
-# Define variables for paths
-SETTINGS_DIR=$(jupyter --data-dir)/lab/settings/
-
-# Installing Juxl extensions
+# Installing Juxl extensions (learning analytics)
 echo "Installing Juxl extensions..."
-jupyter labextension install @juxl/juxl-extension@^3.1.1 2>&1 | tee juxl-extension.log
-jupyter labextension install @juxl/logging@^3.1.1 2>&1 | tee juxl-logging.log
+jupyter labextension install @juxl/juxl-extension@^3.1.1
+jupyter labextension install @juxl/logging@^3.1.1
 
 # Building JupyterLab
 echo "Building JupyterLab..."
-jupyter lab build 2>&1 | tee jupyter-build.log
+jupyter lab build
 
 # Copying overrides.json to the appropriate location
 echo "Copying JupyterLab settings overrides..."
-mkdir -p $SETTINGS_DIR
-cp overrides.json $SETTINGS_DIR/overrides.json
+mkdir -p /srv/conda/envs/notebook/share/jupyter/lab/settings/
+cp overrides.json /srv/conda/envs/notebook/share/jupyter/lab/settings/overrides.json
 
 # Updating Jupyter Notebook configuration
 echo "Updating Jupyter Notebook configuration..."
@@ -24,8 +21,8 @@ echo "c.NotebookApp.allow_origin = 'https://juxlauth-codingai.elearn.rwth-aachen
 
 # Installing JupyterLab Feedback extension
 echo "Installing JupyterLab Feedback extension..."
-pip install jupyterlab_feedback-0.6.2-py3-none-any.whl 2>&1 | tee feedback-install.log
+pip install jupyterlab_feedback-0.6.2-py3-none-any.whl
 
 # Verifying installed JupyterLab extensions
 echo "Verifying JupyterLab extensions..."
-jupyter labextension list 2>&1 | tee extension-list.log
+jupyter labextension list
